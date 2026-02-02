@@ -1,0 +1,89 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'Dave Tashner - Software engineer, creator, and lifelong learner sharing thoughts on technology, design, and building things.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+
+    <!-- RSS Feed -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Dave Tashner's Blog"
+      href="/rss.xml"
+    />
+
+    <!-- Theme color that changes with theme -->
+    <meta
+      name="theme-color"
+      content="#ffffff"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#0f172a"
+      media="(prefers-color-scheme: dark)"
+    />
+
+    <title>{title}</title>
+
+    <!-- Inline script to prevent flash of wrong theme -->
+    <script is:inline>
+      (function () {
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia(
+          '(prefers-color-scheme: dark)'
+        ).matches;
+
+        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+
+    <!-- Global styles -->
+    <style is:global>
+      @import '../styles/global.css';
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col transition-theme">
+    <!-- Skip to content link for accessibility -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:rounded-md focus:outline-none"
+      style="background-color: var(--color-accent); color: white;"
+    >
+      Skip to content
+    </a>
+
+    <!-- Header slot -->
+    <slot name="header" />
+
+    <!-- Main content area -->
+    <main id="main-content" class="flex-grow">
+      <slot />
+    </main>
+
+    <!-- Footer slot -->
+    <slot name="footer" />
+  </body>
+</html>
