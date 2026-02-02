@@ -109,15 +109,108 @@ The site automatically deploys to AWS S3/CloudFront when changes are pushed to `
 2. Deploy job syncs the built files to S3
 3. CloudFront cache is invalidated to serve updated content
 
-#### Required GitHub Secrets
+### GitHub Secrets Configuration
 
-Configure these secrets in your GitHub repository settings:
+The deployment workflow uses AWS OIDC (OpenID Connect) for secure, credential-free authentication. This eliminates the need to store long-lived AWS access keys as secrets.
 
-| Secret                           | Description                          |
-| -------------------------------- | ------------------------------------ |
-| `AWS_ROLE_ARN`                   | IAM role ARN for OIDC authentication |
-| `AWS_S3_BUCKET`                  | S3 bucket name for static files      |
-| `AWS_CLOUDFRONT_DISTRIBUTION_ID` | CloudFront distribution ID           |
+#### Required Secrets
+
+Configure these secrets in your GitHub repository settings (Settings > Secrets and variables > Actions):
+
+| Secret                           | Description                                               |
+| -------------------------------- | --------------------------------------------------------- |
+| `AWS_ROLE_ARN`                   | IAM role ARN for OIDC authentication (see setup below)    |
+| `AWS_S3_BUCKET`                  | S3 bucket name for static files (e.g., `davetashner.com`) |
+| `AWS_CLOUDFRONT_DISTRIBUTION_ID` | CloudFront distribution ID for cache invalidation         |
+
+#### Setting Up AWS OIDC Provider
+
+To allow GitHub Actions to assume an IAM role without access keys, you need to configure an OIDC identity provider in AWS.
+
+**Step 1: Create the OIDC Identity Provider**
+
+1. Go to IAM > Identity providers > Add provider
+2. Select "OpenID Connect"
+3. For Provider URL, enter: `https://token.actions.githubusercontent.com`
+4. Click "Get thumbprint"
+5. For Audience, enter: `sts.amazonaws.com`
+6. Click "Add provider"
+
+**Step 2: Create an IAM Role for GitHub Actions**
+
+1. Go to IAM > Roles > Create role
+2. Select "Web identity" as the trusted entity type
+3. Choose the GitHub OIDC provider you just created
+4. For Audience, select `sts.amazonaws.com`
+5. Click Next and attach the required policies (see below)
+6. Name the role (e.g., `github-actions-davetashner-deploy`)
+
+**Step 3: Configure the Trust Policy**
+
+Edit the role's trust policy to restrict access to your specific repository:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "arn:aws:iam::YOUR_ACCOUNT_ID:oidc-provider/token.actions.githubusercontent.com"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+        },
+        "StringLike": {
+          "token.actions.githubusercontent.com:sub": "repo:YOUR_GITHUB_USERNAME/davetashner.com:*"
+        }
+      }
+    }
+  ]
+}
+```
+
+Replace `YOUR_ACCOUNT_ID` with your AWS account ID and `YOUR_GITHUB_USERNAME` with your GitHub username.
+
+**Step 4: Attach Required Policies**
+
+Create and attach a policy with the following permissions:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "S3Deploy",
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:DeleteObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::YOUR_BUCKET_NAME",
+        "arn:aws:s3:::YOUR_BUCKET_NAME/*"
+      ]
+    },
+    {
+      "Sid": "CloudFrontInvalidation",
+      "Effect": "Allow",
+      "Action": "cloudfront:CreateInvalidation",
+      "Resource": "arn:aws:cloudfront::YOUR_ACCOUNT_ID:distribution/YOUR_DISTRIBUTION_ID"
+    }
+  ]
+}
+```
+
+Replace the placeholder values with your actual S3 bucket name, AWS account ID, and CloudFront distribution ID.
+
+**Step 5: Add the Role ARN to GitHub Secrets**
+
+Copy the ARN of the role you created (e.g., `arn:aws:iam::123456789012:role/github-actions-davetashner-deploy`) and add it as the `AWS_ROLE_ARN` secret in your GitHub repository.
 
 ### Contact Form Lambda (AWS SAM)
 

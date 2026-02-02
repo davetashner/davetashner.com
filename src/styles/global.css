@@ -561,6 +561,19 @@
    -------------------------------------------------------------------------- */
 
 @layer utilities {
+  /* Screen reader only - visually hidden but available to assistive technology */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
   /* Transition utilities */
   .transition-theme {
     transition:

@@ -1,34 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ThemeToggle from '../components/ThemeToggle.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <BaseLayout title="About - Dave Tashner">
-  <header
-    slot="header"
-    class="sticky top-0 z-40 w-full border-b transition-theme"
-    style="border-color: var(--color-border); background-color: var(--color-bg-primary);"
-  >
-    <div class="container flex h-14 items-center justify-between">
-      <a
-        href="/"
-        class="font-semibold hover:opacity-80 transition-opacity"
-        style="color: var(--color-text-primary);"
-      >
-        Dave Tashner
-      </a>
-      <nav class="flex items-center gap-6">
-        <a
-          href="/about"
-          class="text-sm font-medium"
-          style="color: var(--color-accent);"
-        >
-          About
-        </a>
-        <ThemeToggle />
-      </nav>
-    </div>
-  </header>
+  <Header slot="header" />
 
   <!-- Hero Section -->
   <section class="section">
@@ -58,7 +35,7 @@ import ThemeToggle from '../components/ThemeToggle.astro';
     <div class="container">
       <div class="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
         <!-- Photo Placeholder -->
-        <div class="animate-on-scroll order-2 md:order-1">
+        <div class="animate-on-scroll order-2 md:order-1" aria-hidden="true">
           <div
             class="aspect-square rounded-2xl overflow-hidden"
             style="background: var(--gradient-primary); box-shadow: var(--shadow-xl);"
@@ -125,6 +102,7 @@ import ThemeToggle from '../components/ThemeToggle.astro';
                 stroke="currentColor"
                 viewBox="0 0 24 24"
                 style="color: var(--color-accent);"
+                aria-hidden="true"
               >
                 <path
                   stroke-linecap="round"
@@ -157,6 +135,7 @@ import ThemeToggle from '../components/ThemeToggle.astro';
                 stroke="currentColor"
                 viewBox="0 0 24 24"
                 style="color: var(--color-accent);"
+                aria-hidden="true"
               >
                 <path
                   stroke-linecap="round"
@@ -190,6 +169,7 @@ import ThemeToggle from '../components/ThemeToggle.astro';
                 stroke="currentColor"
                 viewBox="0 0 24 24"
                 style="color: var(--color-accent);"
+                aria-hidden="true"
               >
                 <path
                   stroke-linecap="round"
@@ -223,6 +203,7 @@ import ThemeToggle from '../components/ThemeToggle.astro';
                 stroke="currentColor"
                 viewBox="0 0 24 24"
                 style="color: var(--color-accent);"
+                aria-hidden="true"
               >
                 <path
                   stroke-linecap="round"
@@ -256,6 +237,7 @@ import ThemeToggle from '../components/ThemeToggle.astro';
                 stroke="currentColor"
                 viewBox="0 0 24 24"
                 style="color: var(--color-accent);"
+                aria-hidden="true"
               >
                 <path
                   stroke-linecap="round"
@@ -288,6 +270,7 @@ import ThemeToggle from '../components/ThemeToggle.astro';
                 stroke="currentColor"
                 viewBox="0 0 24 24"
                 style="color: var(--color-accent);"
+                aria-hidden="true"
               >
                 <path
                   stroke-linecap="round"
@@ -447,6 +430,7 @@ import ThemeToggle from '../components/ThemeToggle.astro';
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path
               stroke-linecap="round"
@@ -461,18 +445,7 @@ import ThemeToggle from '../components/ThemeToggle.astro';
     </div>
   </section>
 
-  <footer
-    slot="footer"
-    class="border-t py-6 transition-theme"
-    style="border-color: var(--color-border);"
-  >
-    <div
-      class="container text-center text-sm"
-      style="color: var(--color-text-muted);"
-    >
-      &copy; {new Date().getFullYear()} Dave Tashner. All rights reserved.
-    </div>
-  </footer>
+  <Footer slot="footer" />
 </BaseLayout>
 
 <style>

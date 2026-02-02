@@ -34,7 +34,9 @@ import Footer from '../components/Footer.astro';
           <form id="contact-form" class="contact-form" novalidate>
             <div class="form-group">
               <label for="name" class="form-label"
-                >Name <span class="required">*</span></label
+                >Name <span class="required" aria-hidden="true">*</span><span
+                  class="sr-only">(required)</span
+                ></label
               >
               <input
                 type="text"
@@ -44,6 +46,7 @@ import Footer from '../components/Footer.astro';
                 placeholder="Your name"
                 required
                 autocomplete="name"
+                aria-describedby="name-error"
               />
               <span class="error-message" id="name-error" aria-live="polite"
               ></span>
@@ -51,7 +54,9 @@ import Footer from '../components/Footer.astro';
 
             <div class="form-group">
               <label for="email" class="form-label"
-                >Email <span class="required">*</span></label
+                >Email <span class="required" aria-hidden="true">*</span><span
+                  class="sr-only">(required)</span
+                ></label
               >
               <input
                 type="email"
@@ -61,6 +66,7 @@ import Footer from '../components/Footer.astro';
                 placeholder="your@email.com"
                 required
                 autocomplete="email"
+                aria-describedby="email-error"
               />
               <span class="error-message" id="email-error" aria-live="polite"
               ></span>
@@ -68,7 +74,9 @@ import Footer from '../components/Footer.astro';
 
             <div class="form-group">
               <label for="message" class="form-label"
-                >Message <span class="required">*</span></label
+                >Message <span class="required" aria-hidden="true">*</span><span
+                  class="sr-only">(required)</span
+                ></label
               >
               <textarea
                 id="message"
@@ -76,7 +84,8 @@ import Footer from '../components/Footer.astro';
                 class="form-input form-textarea"
                 placeholder="What would you like to say?"
                 rows="6"
-                required></textarea>
+                required
+                aria-describedby="message-error"></textarea>
               <span class="error-message" id="message-error" aria-live="polite"
               ></span>
             </div>
@@ -98,7 +107,8 @@ import Footer from '../components/Footer.astro';
             <!-- Anti-spam verification question -->
             <div class="form-group">
               <label for="verification" class="form-label"
-                >Verification <span class="required">*</span></label
+                >Verification <span class="required" aria-hidden="true">*</span
+                ><span class="sr-only">(required)</span></label
               >
               <div class="verification-question">
                 <span class="verification-text" id="verification-question-text"
@@ -114,6 +124,7 @@ import Footer from '../components/Footer.astro';
                   required
                   autocomplete="off"
                   inputmode="numeric"
+                  aria-describedby="verification-question-text verification-error"
                 />
               </div>
               <span
@@ -131,6 +142,7 @@ import Footer from '../components/Footer.astro';
                   height="20"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
                 >
                   <circle
                     class="spinner-circle"
@@ -159,6 +171,7 @@ import Footer from '../components/Footer.astro';
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
+                aria-hidden="true"
               >
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                 <polyline points="22 4 12 14.01 9 11.01"></polyline>
