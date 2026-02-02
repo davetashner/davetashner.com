@@ -1,0 +1,188 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="Page Not Found - Dave Tashner">
+  <Header slot="header" />
+
+  <section class="error-page">
+    <!-- Animated background orbs matching hero style -->
+    <div class="error-background">
+      <div class="error-gradient-orb error-gradient-orb-1"></div>
+      <div class="error-gradient-orb error-gradient-orb-2"></div>
+      <div class="error-gradient-orb error-gradient-orb-3"></div>
+    </div>
+
+    <div class="container error-content">
+      <h1 class="error-title">
+        <span class="text-gradient">404</span>
+      </h1>
+      <p class="error-message">Looks like this page wandered off</p>
+      <p class="error-description">
+        The page you're looking for doesn't exist or has been moved.
+      </p>
+      <a href="/" class="btn btn-primary">
+        Back to Home
+        <svg
+          class="btn-icon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 12h14"></path>
+          <path d="m12 5 7 7-7 7"></path>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  .error-page {
+    position: relative;
+    min-height: calc(100vh - 4rem - 200px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 4rem 0;
+  }
+
+  .error-background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .error-gradient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.3;
+  }
+
+  .error-gradient-orb-1 {
+    width: 350px;
+    height: 350px;
+    background: var(--gradient-start);
+    top: -80px;
+    right: -80px;
+    animation: float 20s ease-in-out infinite;
+  }
+
+  .error-gradient-orb-2 {
+    width: 280px;
+    height: 280px;
+    background: var(--gradient-end);
+    bottom: -60px;
+    left: -60px;
+    animation: float 25s ease-in-out infinite reverse;
+  }
+
+  .error-gradient-orb-3 {
+    width: 180px;
+    height: 180px;
+    background: #ec4899;
+    top: 40%;
+    left: 30%;
+    animation: float 18s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(20px, -20px);
+    }
+    50% {
+      transform: translate(-10px, 10px);
+    }
+    75% {
+      transform: translate(15px, 15px);
+    }
+  }
+
+  .error-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 36rem;
+    margin: 0 auto;
+  }
+
+  .error-title {
+    font-size: 8rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  @media (min-width: 640px) {
+    .error-title {
+      font-size: 10rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .error-title {
+      font-size: 12rem;
+    }
+  }
+
+  .error-message {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .error-message {
+      font-size: 1.875rem;
+    }
+  }
+
+  .error-description {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.7;
+  }
+
+  @media (min-width: 640px) {
+    .error-description {
+      font-size: 1.125rem;
+    }
+  }
+
+  .btn-icon {
+    margin-left: 0.5rem;
+    transition: transform var(--transition-fast);
+  }
+
+  .btn:hover .btn-icon {
+    transform: translateX(4px);
+  }
+
+  /* Respect reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    .error-gradient-orb {
+      animation: none;
+    }
+  }
+</style>

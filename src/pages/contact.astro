@@ -81,6 +81,47 @@ import Footer from '../components/Footer.astro';
               ></span>
             </div>
 
+            <!-- Honeypot field - hidden from humans, bots will fill it -->
+            <div class="form-group honeypot-field" aria-hidden="true">
+              <label for="website" class="form-label">Website</label>
+              <input
+                type="text"
+                id="website"
+                name="website"
+                class="form-input"
+                placeholder="Your website"
+                tabindex="-1"
+                autocomplete="off"
+              />
+            </div>
+
+            <!-- Anti-spam verification question -->
+            <div class="form-group">
+              <label for="verification" class="form-label"
+                >Verification <span class="required">*</span></label
+              >
+              <div class="verification-question">
+                <span class="verification-text" id="verification-question-text"
+                  >What is <span id="num1"></span> + <span id="num2"
+                  ></span>?</span
+                >
+                <input
+                  type="text"
+                  id="verification"
+                  name="verification"
+                  class="form-input verification-input"
+                  placeholder="Your answer"
+                  required
+                  autocomplete="off"
+                  inputmode="numeric"
+                />
+              </div>
+              <span
+                class="error-message"
+                id="verification-error"
+                aria-live="polite"></span>
+            </div>
+
             <button type="submit" class="submit-button" id="submit-btn">
               <span class="button-text">Send Message</span>
               <span class="button-loading hidden">
@@ -490,6 +531,46 @@ import Footer from '../components/Footer.astro';
     transform: translateX(2px);
   }
 
+  /* Honeypot field - hidden from users */
+  .honeypot-field {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Verification question */
+  .verification-question {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .verification-text {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    padding: 0.5rem 0.75rem;
+    background-color: var(--color-bg-tertiary);
+    border-radius: var(--radius-sm);
+    display: inline-block;
+  }
+
+  .verification-input {
+    max-width: 8rem;
+  }
+
+  @media (min-width: 640px) {
+    .verification-question {
+      flex-direction: row;
+      align-items: center;
+      gap: 1rem;
+    }
+  }
+
   /* Utility */
   .hidden {
     display: none !important;
@@ -520,13 +601,39 @@ import Footer from '../components/Footer.astro';
     const messageInput = document.getElementById(
       'message'
     ) as HTMLTextAreaElement;
+    const honeypotInput = document.getElementById(
+      'website'
+    ) as HTMLInputElement;
+    const verificationInput = document.getElementById(
+      'verification'
+    ) as HTMLInputElement;
 
     const nameError = document.getElementById('name-error');
     const emailError = document.getElementById('email-error');
     const messageError = document.getElementById('message-error');
+    const verificationError = document.getElementById('verification-error');
 
     // Email validation regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Generate random numbers for verification question
+    let num1 = 0;
+    let num2 = 0;
+    let expectedAnswer = 0;
+
+    function generateVerificationQuestion() {
+      num1 = Math.floor(Math.random() * 10) + 1;
+      num2 = Math.floor(Math.random() * 10) + 1;
+      expectedAnswer = num1 + num2;
+
+      const num1Span = document.getElementById('num1');
+      const num2Span = document.getElementById('num2');
+      if (num1Span) num1Span.textContent = num1.toString();
+      if (num2Span) num2Span.textContent = num2.toString();
+    }
+
+    // Generate the question on init
+    generateVerificationQuestion();
 
     function showError(
       input: HTMLInputElement | HTMLTextAreaElement,
@@ -547,6 +654,12 @@ import Footer from '../components/Footer.astro';
 
     function validateForm(): boolean {
       let isValid = true;
+
+      // Check honeypot - if filled, it is likely a bot
+      if (honeypotInput && honeypotInput.value.trim()) {
+        // Silently fail for bots - do not show error message
+        return false;
+      }
 
       // Validate name
       if (!nameInput.value.trim()) {
@@ -579,34 +692,63 @@ import Footer from '../components/Footer.astro';
         clearError(messageInput, messageError);
       }
 
+      // Validate verification answer
+      if (!verificationInput.value.trim()) {
+        showError(
+          verificationInput,
+          verificationError,
+          'Please answer the verification question.'
+        );
+        isValid = false;
+      } else if (
+        parseInt(verificationInput.value.trim(), 10) !== expectedAnswer
+      ) {
+        showError(
+          verificationInput,
+          verificationError,
+          'Incorrect answer. Please try again.'
+        );
+        isValid = false;
+      } else {
+        clearError(verificationInput, verificationError);
+      }
+
       return isValid;
     }
 
     // Clear errors on input
-    [nameInput, emailInput, messageInput].forEach((input) => {
-      if (!input) return;
+    [nameInput, emailInput, messageInput, verificationInput].forEach(
+      (input) => {
+        if (!input) return;
 
-      const errorEl = document.getElementById(`${input.id}-error`);
+        const errorEl = document.getElementById(`${input.id}-error`);
 
-      input.addEventListener('input', () => {
-        clearError(input, errorEl);
-      });
+        input.addEventListener('input', () => {
+          clearError(input, errorEl);
+        });
 
-      input.addEventListener('blur', () => {
-        // Validate individual field on blur
-        if (input.id === 'name' && !input.value.trim()) {
-          showError(input, errorEl, 'Please enter your name.');
-        } else if (input.id === 'email') {
-          if (!input.value.trim()) {
-            showError(input, errorEl, 'Please enter your email address.');
-          } else if (!emailRegex.test(input.value.trim())) {
-            showError(input, errorEl, 'Please enter a valid email address.');
+        input.addEventListener('blur', () => {
+          // Validate individual field on blur
+          if (input.id === 'name' && !input.value.trim()) {
+            showError(input, errorEl, 'Please enter your name.');
+          } else if (input.id === 'email') {
+            if (!input.value.trim()) {
+              showError(input, errorEl, 'Please enter your email address.');
+            } else if (!emailRegex.test(input.value.trim())) {
+              showError(input, errorEl, 'Please enter a valid email address.');
+            }
+          } else if (input.id === 'message' && !input.value.trim()) {
+            showError(input, errorEl, 'Please enter your message.');
+          } else if (input.id === 'verification' && !input.value.trim()) {
+            showError(
+              input,
+              errorEl,
+              'Please answer the verification question.'
+            );
           }
-        } else if (input.id === 'message' && !input.value.trim()) {
-          showError(input, errorEl, 'Please enter your message.');
-        }
-      });
-    });
+        });
+      }
+    );
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -615,6 +757,11 @@ import Footer from '../components/Footer.astro';
         // Focus first invalid field
         const firstError = form.querySelector('.error') as HTMLElement;
         if (firstError) firstError.focus();
+        // Regenerate verification question on failed validation (for security)
+        if (verificationInput.classList.contains('error')) {
+          generateVerificationQuestion();
+          verificationInput.value = '';
+        }
         return;
       }
 
@@ -633,12 +780,17 @@ import Footer from '../components/Footer.astro';
 
         // Reset form for if user returns
         form.reset();
+        // Generate new verification question for next submission
+        generateVerificationQuestion();
       } catch (error) {
         // Handle error (placeholder)
         console.error('Form submission error:', error);
         submitBtn.disabled = false;
         buttonText.classList.remove('hidden');
         buttonLoading.classList.add('hidden');
+        // Generate new verification question on error
+        generateVerificationQuestion();
+        verificationInput.value = '';
       }
     });
   }
