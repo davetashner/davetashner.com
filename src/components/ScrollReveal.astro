@@ -1,0 +1,135 @@
+---
+// ScrollReveal component - Animates children when they enter the viewport
+// Uses Intersection Observer API and respects prefers-reduced-motion
+
+interface Props {
+  /** Animation type: 'fade-up' | 'fade-in' | 'slide-left' | 'slide-right' */
+  animation?: 'fade-up' | 'fade-in' | 'slide-left' | 'slide-right';
+  /** Delay before animation starts (in ms) */
+  delay?: number;
+  /** Intersection threshold (0-1) - percentage of element visible before triggering */
+  threshold?: number;
+  /** HTML tag to render as wrapper */
+  as?: 'div' | 'section' | 'article' | 'aside' | 'li' | 'span';
+  /** Additional CSS classes */
+  class?: string;
+}
+
+const {
+  animation = 'fade-up',
+  delay = 0,
+  threshold = 0.1,
+  as: Tag = 'div',
+  class: className = '',
+} = Astro.props;
+
+const animationClass = `animate-${animation}`;
+---
+
+<Tag
+  class:list={['scroll-reveal', 'animate-on-scroll', className]}
+  data-animation={animationClass}
+  data-delay={delay}
+  data-threshold={threshold}
+>
+  <slot />
+</Tag>
+
+<script>
+  function initScrollReveal() {
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+
+    const elements = document.querySelectorAll(
+      '.scroll-reveal.animate-on-scroll'
+    );
+
+    if (prefersReducedMotion) {
+      // If user prefers reduced motion, show all elements immediately without animation
+      elements.forEach((el) => {
+        el.classList.remove('animate-on-scroll');
+      });
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target as HTMLElement;
+            const animationClass = el.dataset.animation || 'animate-fade-up';
+            const delay = parseInt(el.dataset.delay || '0', 10);
+
+            // Apply animation after optional delay
+            if (delay > 0) {
+              setTimeout(() => {
+                el.classList.remove('animate-on-scroll');
+                el.classList.add(animationClass);
+              }, delay);
+            } else {
+              el.classList.remove('animate-on-scroll');
+              el.classList.add(animationClass);
+            }
+
+            // Stop observing once animated
+            observer.unobserve(el);
+          }
+        });
+      },
+      {
+        // Default threshold, will be overridden per-element
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px',
+      }
+    );
+
+    elements.forEach((el) => {
+      const threshold = parseFloat(
+        (el as HTMLElement).dataset.threshold || '0.1'
+      );
+
+      // Create individual observer if threshold differs from default
+      if (threshold !== 0.1) {
+        const customObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const element = entry.target as HTMLElement;
+                const animationClass =
+                  element.dataset.animation || 'animate-fade-up';
+                const delay = parseInt(element.dataset.delay || '0', 10);
+
+                if (delay > 0) {
+                  setTimeout(() => {
+                    element.classList.remove('animate-on-scroll');
+                    element.classList.add(animationClass);
+                  }, delay);
+                } else {
+                  element.classList.remove('animate-on-scroll');
+                  element.classList.add(animationClass);
+                }
+
+                customObserver.unobserve(element);
+              }
+            });
+          },
+          {
+            threshold,
+            rootMargin: '0px 0px -50px 0px',
+          }
+        );
+        customObserver.observe(el);
+      } else {
+        observer.observe(el);
+      }
+    });
+  }
+
+  // Initialize on page load
+  initScrollReveal();
+
+  // Re-initialize on Astro page transitions (View Transitions)
+  document.addEventListener('astro:after-swap', initScrollReveal);
+</script>

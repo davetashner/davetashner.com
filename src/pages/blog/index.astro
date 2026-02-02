@@ -1,0 +1,153 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ThemeToggle from '../../components/ThemeToggle.astro';
+import Footer from '../../components/Footer.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import ScrollReveal from '../../components/ScrollReveal.astro';
+
+// Get all blog posts and sort by date descending
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BaseLayout
+  title="Blog - Dave Tashner"
+  description="Thoughts on software development, technology, design, and building things."
+>
+  <header
+    slot="header"
+    class="sticky top-0 z-40 w-full border-b transition-theme"
+    style="border-color: var(--color-border); background-color: var(--color-bg-primary);"
+  >
+    <div class="container flex h-14 items-center justify-between">
+      <a
+        href="/"
+        class="font-semibold"
+        style="color: var(--color-text-primary); text-decoration: none;"
+      >
+        Dave Tashner
+      </a>
+      <nav class="flex items-center gap-6">
+        <a href="/blog" class="nav-link active">Blog</a>
+        <ThemeToggle />
+      </nav>
+    </div>
+  </header>
+
+  <div class="section">
+    <div class="container">
+      <ScrollReveal animation="fade-up">
+        <header class="page-header">
+          <h1 class="page-title">
+            <span class="text-gradient">Blog</span>
+          </h1>
+          <p class="page-description">
+            Thoughts on software development, technology, design, and building
+            things.
+          </p>
+        </header>
+      </ScrollReveal>
+
+      {
+        posts.length > 0 ? (
+          <div class="blog-grid stagger-children animate-stagger">
+            {posts.map((post, index) => (
+              <ScrollReveal animation="fade-up" delay={index * 50} as="article">
+                <BlogCard
+                  title={post.data.title}
+                  description={post.data.description}
+                  pubDate={post.data.pubDate}
+                  slug={post.id}
+                  heroImage={post.data.heroImage}
+                  tags={post.data.tags}
+                />
+              </ScrollReveal>
+            ))}
+          </div>
+        ) : (
+          <ScrollReveal animation="fade-up">
+            <div class="empty-state">
+              <p>No blog posts yet. Check back soon!</p>
+            </div>
+          </ScrollReveal>
+        )
+      }
+    </div>
+  </div>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  .nav-link {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--color-accent);
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+  }
+
+  @media (min-width: 768px) {
+    .page-title {
+      font-size: 3rem;
+    }
+  }
+
+  .page-description {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: 36rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .blog-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .blog-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+  }
+
+  .empty-state p {
+    color: var(--color-text-muted);
+    font-size: 1.125rem;
+    margin: 0;
+  }
+</style>

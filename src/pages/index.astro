@@ -1,46 +1,642 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ThemeToggle from '../components/ThemeToggle.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 ---
 
-<BaseLayout title="Dave Tashner - Coming Soon">
-  <header
-    slot="header"
-    class="sticky top-0 z-40 w-full border-b transition-theme"
-    style="border-color: var(--color-border); background-color: var(--color-bg-primary);"
-  >
-    <div class="container flex h-14 items-center justify-between">
-      <span class="font-semibold" style="color: var(--color-text-primary);"
-        >Dave Tashner</span
+<BaseLayout title="Dave Tashner - Software Engineer & Creator">
+  <Header slot="header" />
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-background">
+      <div class="hero-gradient-orb hero-gradient-orb-1"></div>
+      <div class="hero-gradient-orb hero-gradient-orb-2"></div>
+      <div class="hero-gradient-orb hero-gradient-orb-3"></div>
+    </div>
+    <div class="container hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title">
+          Hi, I'm <span class="text-gradient">Dave Tashner</span>
+        </h1>
+        <p class="hero-tagline">
+          Software engineer, creator, and lifelong learner. I build products and
+          share what I learn along the way.
+        </p>
+        <div class="hero-cta">
+          <a href="/blog" class="btn btn-primary">
+            View Blog
+            <svg
+              class="btn-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg>
+          </a>
+          <a href="/contact" class="btn btn-secondary"> Contact Me </a>
+        </div>
+      </div>
+    </div>
+    <a href="#intro" class="scroll-indicator" aria-label="Scroll to content">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       >
-      <ThemeToggle />
-    </div>
-  </header>
+        <path d="m6 9 6 6 6-6"></path>
+      </svg>
+    </a>
+  </section>
 
-  <div
-    class="container py-16 flex flex-col items-center justify-center min-h-[calc(100vh-8rem)]"
-  >
-    <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-center mb-4">
-      <span class="text-gradient">Coming Soon</span>
-    </h1>
-    <p
-      class="text-lg text-center max-w-md"
-      style="color: var(--color-text-secondary);"
-    >
-      Something new is on the way. Stay tuned for updates.
-    </p>
-  </div>
-
-  <footer
-    slot="footer"
-    class="border-t py-6 transition-theme"
-    style="border-color: var(--color-border);"
-  >
-    <div
-      class="container text-center text-sm"
-      style="color: var(--color-text-muted);"
-    >
-      &copy; {new Date().getFullYear()} Dave Tashner. All rights reserved.
+  <!-- Intro Section -->
+  <section id="intro" class="section intro-section">
+    <div class="container">
+      <div class="intro-content reveal-on-scroll">
+        <h2 class="section-title">About Me</h2>
+        <p class="intro-text">
+          I'm a software engineer passionate about building thoughtful,
+          user-focused products. With experience across the full stack, I enjoy
+          tackling complex problems and finding elegant solutions. When I'm not
+          coding, you'll find me exploring new technologies, reading, or working
+          on side projects.
+        </p>
+        <a href="/about" class="link-arrow">
+          Learn more about me
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
     </div>
-  </footer>
+  </section>
+
+  <!-- Featured Blog Posts Section -->
+  <section class="section blog-section">
+    <div class="container">
+      <div class="section-header reveal-on-scroll">
+        <h2 class="section-title">Recent Posts</h2>
+        <p class="section-subtitle">
+          Thoughts on software development, technology, and building things.
+        </p>
+      </div>
+      <div class="blog-grid">
+        <!-- Blog Post Card 1 (Placeholder) -->
+        <article class="blog-card reveal-on-scroll">
+          <div class="blog-card-content">
+            <span class="blog-card-date">Coming Soon</span>
+            <h3 class="blog-card-title">First Blog Post</h3>
+            <p class="blog-card-excerpt">
+              Stay tuned for upcoming articles on software development,
+              technology trends, and lessons learned.
+            </p>
+            <span class="blog-card-link">
+              Read more
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+              </svg>
+            </span>
+          </div>
+        </article>
+
+        <!-- Blog Post Card 2 (Placeholder) -->
+        <article class="blog-card reveal-on-scroll">
+          <div class="blog-card-content">
+            <span class="blog-card-date">Coming Soon</span>
+            <h3 class="blog-card-title">Second Blog Post</h3>
+            <p class="blog-card-excerpt">
+              Exploring new ideas and sharing insights from my journey in
+              software engineering.
+            </p>
+            <span class="blog-card-link">
+              Read more
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+              </svg>
+            </span>
+          </div>
+        </article>
+
+        <!-- Blog Post Card 3 (Placeholder) -->
+        <article class="blog-card reveal-on-scroll">
+          <div class="blog-card-content">
+            <span class="blog-card-date">Coming Soon</span>
+            <h3 class="blog-card-title">Third Blog Post</h3>
+            <p class="blog-card-excerpt">
+              Practical tips and tutorials to help you level up your development
+              skills.
+            </p>
+            <span class="blog-card-link">
+              Read more
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+              </svg>
+            </span>
+          </div>
+        </article>
+      </div>
+      <div class="blog-view-all reveal-on-scroll">
+        <a href="/blog" class="link-arrow">
+          View all posts
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact CTA Section -->
+  <section class="section contact-cta-section">
+    <div class="container">
+      <div class="contact-cta reveal-on-scroll">
+        <h2 class="contact-cta-title">Let's Connect</h2>
+        <p class="contact-cta-text">
+          Have a project in mind or just want to chat? I'd love to hear from
+          you.
+        </p>
+        <a href="/contact" class="btn btn-primary">
+          Get in Touch
+          <svg
+            class="btn-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
 </BaseLayout>
+
+<style>
+  /* ==========================================================================
+     Hero Section
+     ========================================================================== */
+
+  .hero {
+    position: relative;
+    min-height: calc(100vh - 4rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .hero-background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .hero-gradient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+  }
+
+  .hero-gradient-orb-1 {
+    width: 400px;
+    height: 400px;
+    background: var(--gradient-start);
+    top: -100px;
+    right: -100px;
+    animation: float 20s ease-in-out infinite;
+  }
+
+  .hero-gradient-orb-2 {
+    width: 300px;
+    height: 300px;
+    background: var(--gradient-end);
+    bottom: -50px;
+    left: -50px;
+    animation: float 25s ease-in-out infinite reverse;
+  }
+
+  .hero-gradient-orb-3 {
+    width: 200px;
+    height: 200px;
+    background: #ec4899;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: float 15s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(20px, -20px);
+    }
+    50% {
+      transform: translate(-10px, 10px);
+    }
+    75% {
+      transform: translate(15px, 15px);
+    }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem 0;
+  }
+
+  .hero-text {
+    max-width: 48rem;
+    margin: 0 auto;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  @media (min-width: 640px) {
+    .hero-title {
+      font-size: 3.5rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hero-title {
+      font-size: 4rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-title {
+      font-size: 4.5rem;
+    }
+  }
+
+  .hero-tagline {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+    max-width: 36rem;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+  }
+
+  @media (min-width: 640px) {
+    .hero-tagline {
+      font-size: 1.25rem;
+    }
+  }
+
+  .hero-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (min-width: 640px) {
+    .hero-cta {
+      flex-direction: row;
+    }
+  }
+
+  .btn-icon {
+    margin-left: 0.5rem;
+    transition: transform var(--transition-fast);
+  }
+
+  .btn:hover .btn-icon {
+    transform: translateX(4px);
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--color-text-muted);
+    animation: bounce 2s ease-in-out infinite;
+    transition: color var(--transition-fast);
+  }
+
+  .scroll-indicator:hover {
+    color: var(--color-text-primary);
+  }
+
+  @keyframes bounce {
+    0%,
+    100% {
+      transform: translateX(-50%) translateY(0);
+    }
+    50% {
+      transform: translateX(-50%) translateY(8px);
+    }
+  }
+
+  /* ==========================================================================
+     Intro Section
+     ========================================================================== */
+
+  .intro-section {
+    background-color: var(--color-bg-secondary);
+  }
+
+  .intro-content {
+    max-width: 48rem;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .section-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .section-title {
+      font-size: 2.25rem;
+    }
+  }
+
+  .intro-text {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+  }
+
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    color: var(--color-accent);
+    transition: gap var(--transition-fast);
+  }
+
+  .link-arrow:hover {
+    gap: 0.75rem;
+  }
+
+  /* ==========================================================================
+     Blog Section
+     ========================================================================== */
+
+  .blog-section {
+    background-color: var(--color-bg-primary);
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 36rem;
+    margin: 0 auto 3rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+    margin-top: 0.5rem;
+  }
+
+  .blog-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .blog-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .blog-card {
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all var(--transition-base);
+  }
+
+  .blog-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+  }
+
+  .blog-card-content {
+    padding: 1.5rem;
+  }
+
+  .blog-card-date {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  .blog-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0.75rem 0;
+    color: var(--color-text-primary);
+    line-height: 1.4;
+  }
+
+  .blog-card-excerpt {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .blog-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-accent);
+  }
+
+  .blog-card:hover .blog-card-link {
+    gap: 0.75rem;
+  }
+
+  .blog-view-all {
+    text-align: center;
+    margin-top: 3rem;
+  }
+
+  /* ==========================================================================
+     Contact CTA Section
+     ========================================================================== */
+
+  .contact-cta-section {
+    background: var(--gradient-subtle);
+  }
+
+  .contact-cta {
+    text-align: center;
+    max-width: 36rem;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: var(--color-bg-primary);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .contact-cta-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+
+  .contact-cta-text {
+    color: var(--color-text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: 1.125rem;
+  }
+
+  /* ==========================================================================
+     Scroll Reveal Animation
+     ========================================================================== */
+
+  .reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+  }
+
+  .reveal-on-scroll.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  function initScrollReveal() {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal-on-scroll').forEach((el) => {
+      observer.observe(el);
+    });
+  }
+
+  // Initialize on page load
+  initScrollReveal();
+
+  // Re-initialize on Astro page transitions
+  document.addEventListener('astro:after-swap', initScrollReveal);
+</script>
