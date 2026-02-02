@@ -1,0 +1,7 @@
+# robots.txt for davetashner.com
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://davetashner.com/sitemap.xml

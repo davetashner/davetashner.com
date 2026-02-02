@@ -2,12 +2,30 @@
 interface Props {
   title: string;
   description?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  publishedTime?: Date;
+  modifiedTime?: Date;
+  canonicalUrl?: string;
 }
+
+const SITE_URL = 'https://davetashner.com';
 
 const {
   title,
   description = 'Dave Tashner - Software engineer, creator, and lifelong learner sharing thoughts on technology, design, and building things.',
+  ogImage = '/og-image.png',
+  ogType = 'website',
+  publishedTime,
+  modifiedTime,
+  canonicalUrl,
 } = Astro.props;
+
+// Build full URLs
+const pageUrl = canonicalUrl || new URL(Astro.url.pathname, SITE_URL).href;
+const ogImageUrl = ogImage.startsWith('http')
+  ? ogImage
+  : new URL(ogImage, SITE_URL).href;
 ---
 
 <!doctype html>
@@ -41,6 +59,39 @@ const {
       content="#0f172a"
       media="(prefers-color-scheme: dark)"
     />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={pageUrl} />
+
+    <!-- Open Graph meta tags -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Dave Tashner" />
+    {
+      publishedTime && (
+        <meta
+          property="article:published_time"
+          content={publishedTime.toISOString()}
+        />
+      )
+    }
+    {
+      modifiedTime && (
+        <meta
+          property="article:modified_time"
+          content={modifiedTime.toISOString()}
+        />
+      )
+    }
+
+    <!-- Twitter Card meta tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
 
     <title>{title}</title>
 

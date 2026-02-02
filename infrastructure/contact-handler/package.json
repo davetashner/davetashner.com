@@ -1,0 +1,15 @@
+{
+  "name": "davetashner-contact-handler",
+  "version": "1.0.0",
+  "description": "Contact form Lambda handler for davetashner.com",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-ses": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

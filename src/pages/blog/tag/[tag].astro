@@ -1,0 +1,225 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ThemeToggle from '../../../components/ThemeToggle.astro';
+import Footer from '../../../components/Footer.astro';
+import BlogCard from '../../../components/BlogCard.astro';
+import ScrollReveal from '../../../components/ScrollReveal.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+
+  // Get all unique tags from all posts
+  const allTags = new Set<string>();
+  posts.forEach((post) => {
+    post.data.tags?.forEach((tag) => allTags.add(tag));
+  });
+
+  // Create a path for each tag
+  return Array.from(allTags).map((tag) => ({
+    params: { tag },
+    props: {
+      tag,
+      posts: posts
+        .filter((post) => post.data.tags?.includes(tag))
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+    },
+  }));
+}
+
+interface Props {
+  tag: string;
+  posts: Awaited<ReturnType<typeof getCollection<'blog'>>>;
+}
+
+const { tag, posts } = Astro.props;
+
+// Format the tag for display (capitalize words, replace hyphens with spaces)
+const displayTag = tag
+  .split('-')
+  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+  .join(' ');
+---
+
+<BaseLayout
+  title={`Posts tagged "${displayTag}" - Dave Tashner`}
+  description={`Blog posts about ${displayTag}`}
+>
+  <header
+    slot="header"
+    class="sticky top-0 z-40 w-full border-b transition-theme"
+    style="border-color: var(--color-border); background-color: var(--color-bg-primary);"
+  >
+    <div class="container flex h-14 items-center justify-between">
+      <a
+        href="/"
+        class="font-semibold"
+        style="color: var(--color-text-primary); text-decoration: none;"
+      >
+        Dave Tashner
+      </a>
+      <nav class="flex items-center gap-6">
+        <a href="/blog" class="nav-link active">Blog</a>
+        <ThemeToggle />
+      </nav>
+    </div>
+  </header>
+
+  <div class="section">
+    <div class="container">
+      <ScrollReveal animation="fade-up">
+        <header class="page-header">
+          <a href="/blog" class="back-link">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M19 12H5"></path>
+              <path d="M12 19l-7-7 7-7"></path>
+            </svg>
+            All Posts
+          </a>
+          <h1 class="page-title">
+            <span class="tag-label">Tagged:</span>
+            <span class="text-gradient">{displayTag}</span>
+          </h1>
+          <p class="page-description">
+            {posts.length} post{posts.length !== 1 ? 's' : ''} tagged with "{
+              displayTag
+            }"
+          </p>
+        </header>
+      </ScrollReveal>
+
+      {
+        posts.length > 0 ? (
+          <div class="blog-grid stagger-children animate-stagger">
+            {posts.map((post, index) => (
+              <ScrollReveal animation="fade-up" delay={index * 50} as="article">
+                <BlogCard
+                  title={post.data.title}
+                  description={post.data.description}
+                  pubDate={post.data.pubDate}
+                  slug={post.id}
+                  heroImage={post.data.heroImage}
+                  tags={post.data.tags}
+                />
+              </ScrollReveal>
+            ))}
+          </div>
+        ) : (
+          <ScrollReveal animation="fade-up">
+            <div class="empty-state">
+              <p>No posts found with this tag.</p>
+            </div>
+          </ScrollReveal>
+        )
+      }
+    </div>
+  </div>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  .nav-link {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--color-accent);
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+    transition: color var(--transition-fast);
+  }
+
+  .back-link:hover {
+    color: var(--color-accent);
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .tag-label {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+  }
+
+  @media (min-width: 768px) {
+    .page-title {
+      font-size: 3rem;
+    }
+  }
+
+  .page-description {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: 36rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .blog-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .blog-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+  }
+
+  .empty-state p {
+    color: var(--color-text-muted);
+    font-size: 1.125rem;
+    margin: 0;
+  }
+</style>

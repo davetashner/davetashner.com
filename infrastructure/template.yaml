@@ -1,0 +1,87 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Contact form backend for davetashner.com
+
+Globals:
+  Function:
+    Timeout: 10
+    Runtime: nodejs20.x
+    MemorySize: 128
+    Architectures:
+      - arm64
+
+Parameters:
+  RecipientEmail:
+    Type: String
+    Default: davetashner@gmail.com
+    Description: Email address to receive contact form submissions
+  SenderEmail:
+    Type: String
+    Default: hello@davetashner.com
+    Description: Email address to send from (must be verified in SES)
+  AllowedOrigin:
+    Type: String
+    Default: https://davetashner.com
+    Description: Allowed CORS origin
+
+Resources:
+  ContactFormApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: prod
+      CorsConfiguration:
+        AllowOrigins:
+          - !Ref AllowedOrigin
+          - https://www.davetashner.com
+        AllowMethods:
+          - POST
+          - OPTIONS
+        AllowHeaders:
+          - Content-Type
+          - X-Requested-With
+        MaxAge: 300
+
+  ContactFormFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: davetashner-contact-form
+      CodeUri: contact-handler/
+      Handler: index.handler
+      Description: Handles contact form submissions from davetashner.com
+      Environment:
+        Variables:
+          RECIPIENT_EMAIL: !Ref RecipientEmail
+          SENDER_EMAIL: !Ref SenderEmail
+          ALLOWED_ORIGIN: !Ref AllowedOrigin
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - ses:SendEmail
+                - ses:SendRawEmail
+              Resource: '*'
+              Condition:
+                StringEquals:
+                  ses:FromAddress: !Ref SenderEmail
+      Events:
+        ContactPost:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ContactFormApi
+            Path: /contact
+            Method: POST
+
+  ContactFormFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${ContactFormFunction}
+      RetentionInDays: 14
+
+Outputs:
+  ContactFormApiUrl:
+    Description: API Gateway endpoint URL for the contact form
+    Value: !Sub 'https://${ContactFormApi}.execute-api.${AWS::Region}.amazonaws.com/prod/contact'
+  ContactFormFunctionArn:
+    Description: Contact Form Lambda Function ARN
+    Value: !GetAtt ContactFormFunction.Arn
