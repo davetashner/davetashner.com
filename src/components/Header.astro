@@ -208,6 +208,21 @@ function isActive(href: string, currentPath: string): boolean {
   /* Desktop nav link styles */
   .nav-link {
     color: var(--color-text-secondary);
+    position: relative;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-full);
+    transition:
+      width var(--transition-base) ease-out,
+      left var(--transition-base) ease-out;
   }
 
   .nav-link:hover {
@@ -215,9 +230,24 @@ function isActive(href: string, currentPath: string): boolean {
     background-color: var(--color-bg-tertiary);
   }
 
+  .nav-link:hover::after {
+    width: calc(100% - 2rem);
+    left: 1rem;
+  }
+
+  .nav-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
   .nav-link--active {
     color: var(--color-accent);
     background-color: var(--color-accent-light);
+  }
+
+  .nav-link--active::after {
+    width: calc(100% - 2rem);
+    left: 1rem;
   }
 
   .nav-link--active:hover {
@@ -229,6 +259,10 @@ function isActive(href: string, currentPath: string): boolean {
   .mobile-menu-toggle,
   .mobile-menu-close {
     color: var(--color-text-tertiary);
+    transition:
+      color var(--transition-fast),
+      background-color var(--transition-fast),
+      transform var(--transition-fast);
   }
 
   .mobile-menu-toggle:hover,
@@ -237,10 +271,16 @@ function isActive(href: string, currentPath: string): boolean {
     background-color: var(--color-bg-tertiary);
   }
 
-  .mobile-menu-toggle:focus,
-  .mobile-menu-close:focus {
+  .mobile-menu-toggle:active,
+  .mobile-menu-close:active {
+    transform: scale(0.95);
+  }
+
+  .mobile-menu-toggle:focus-visible,
+  .mobile-menu-close:focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
+    box-shadow: 0 0 0 4px var(--color-accent-light);
   }
 
   /* Mobile menu panel */
@@ -282,6 +322,21 @@ function isActive(href: string, currentPath: string): boolean {
   /* Mobile nav link styles */
   .mobile-nav-link {
     color: var(--color-text-secondary);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mobile-nav-link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-full);
+    transform: scaleY(0);
+    transition: transform var(--transition-base) ease-out;
   }
 
   .mobile-nav-link:hover {
@@ -289,14 +344,49 @@ function isActive(href: string, currentPath: string): boolean {
     background-color: var(--color-bg-tertiary);
   }
 
+  .mobile-nav-link:hover::before {
+    transform: scaleY(1);
+  }
+
+  .mobile-nav-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -2px;
+  }
+
   .mobile-nav-link--active {
     color: var(--color-accent);
     background-color: var(--color-accent-light);
   }
 
+  .mobile-nav-link--active::before {
+    transform: scaleY(1);
+  }
+
   .mobile-nav-link--active:hover {
     color: var(--color-accent-hover);
     background-color: var(--color-accent-light);
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .nav-link::after,
+    .mobile-nav-link::before {
+      transition: none;
+    }
+
+    .nav-link:hover::after {
+      width: calc(100% - 2rem);
+      left: 1rem;
+    }
+
+    .mobile-nav-link:hover::before {
+      transform: scaleY(1);
+    }
+
+    .mobile-menu-toggle:active,
+    .mobile-menu-close:active {
+      transform: none;
+    }
   }
 </style>
 

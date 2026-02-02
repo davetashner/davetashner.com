@@ -143,7 +143,11 @@ const formattedUpdatedDate = post.data.updatedDate?.toLocaleDateString(
           post.data.heroImage && (
             <ScrollReveal animation="fade-up" delay={100}>
               <div class="hero-image-container">
-                <img src={post.data.heroImage} alt="" class="hero-image" />
+                <img
+                  src={post.data.heroImage}
+                  alt={`Cover image for ${post.data.title}`}
+                  class="hero-image"
+                />
               </div>
             </ScrollReveal>
           )

@@ -254,6 +254,44 @@
     color: var(--color-accent-hover);
   }
 
+  /* Animated underline link style - opt-in via class */
+  .link-animated {
+    position: relative;
+    display: inline-block;
+  }
+
+  .link-animated::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gradient-primary);
+    transition: width var(--transition-base) ease-out;
+    border-radius: var(--radius-full);
+  }
+
+  .link-animated:hover::after {
+    width: 100%;
+  }
+
+  /* Prose links - for content areas */
+  .prose a:not(.btn):not(.link-arrow) {
+    position: relative;
+    text-decoration: underline;
+    text-decoration-color: var(--color-accent-light);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 2px;
+    transition:
+      color var(--transition-fast),
+      text-decoration-color var(--transition-fast);
+  }
+
+  .prose a:not(.btn):not(.link-arrow):hover {
+    text-decoration-color: var(--color-accent);
+  }
+
   /* Selection */
   ::selection {
     background-color: var(--color-accent);
@@ -264,6 +302,19 @@
   :focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
+  }
+
+  /* Enhanced focus ring for better visibility */
+  :focus-visible:not(:active) {
+    outline-width: 2px;
+    box-shadow: 0 0 0 4px var(--color-accent-light);
+  }
+
+  /* Skip focus ring enhancement for inputs (they have their own) */
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    box-shadow: 0 0 0 3px var(--color-accent-light);
   }
 
   /* Inline code - styled differently from code blocks */
@@ -374,13 +425,30 @@
     padding: 1.5rem;
     box-shadow: var(--shadow-sm);
     transition:
+      transform var(--transition-base),
       box-shadow var(--transition-base),
       border-color var(--transition-base);
   }
 
   .card:hover {
-    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
     border-color: var(--color-accent);
+  }
+
+  /* Card with focus-within for accessibility */
+  .card:focus-within {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  /* Interactive card - for clickable cards */
+  .card-interactive {
+    cursor: pointer;
+  }
+
+  .card-interactive:active {
+    transform: translateY(-2px);
   }
 
   /* Button base */
@@ -391,9 +459,42 @@
     padding: 0.625rem 1.25rem;
     font-weight: 500;
     border-radius: var(--radius-md);
-    transition: all var(--transition-fast);
+    transition:
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast),
+      background-color var(--transition-fast),
+      border-color var(--transition-fast),
+      opacity var(--transition-fast);
     cursor: pointer;
     border: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0) 50%
+    );
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+  }
+
+  .btn:hover::before {
+    opacity: 1;
+  }
+
+  .btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .btn:active {
+    transform: translateY(0) scale(0.98);
   }
 
   .btn-primary {
@@ -402,9 +503,16 @@
   }
 
   .btn-primary:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    box-shadow:
+      var(--shadow-lg),
+      0 4px 20px -4px rgba(59, 130, 246, 0.4);
+  }
+
+  .dark .btn-primary:hover {
+    box-shadow:
+      var(--shadow-lg),
+      0 4px 20px -4px rgba(96, 165, 250, 0.3);
   }
 
   .btn-secondary {
@@ -416,6 +524,12 @@
   .btn-secondary:hover {
     background-color: var(--color-bg-secondary);
     border-color: var(--color-accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-secondary::before {
+    display: none;
   }
 
   /* Container for page content */
@@ -447,6 +561,19 @@
    -------------------------------------------------------------------------- */
 
 @layer utilities {
+  /* Screen reader only - visually hidden but available to assistive technology */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
   /* Transition utilities */
   .transition-theme {
     transition:
@@ -603,6 +730,108 @@
   .stagger-children > * {
     animation: none !important;
     opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Disable transform-based hover effects */
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+
+  /* Keep color transitions for reduced motion - they are less jarring */
+  a,
+  button,
+  .btn,
+  .nav-link,
+  .social-link {
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease,
+      border-color 0.15s ease !important;
+  }
+
+  /* Remove transforms from hover states */
+  .card:hover,
+  .btn:hover,
+  .btn-primary:hover,
+  .btn-secondary:hover,
+  .blog-card:hover,
+  .social-link:hover {
+    transform: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Interactive Element Utility Classes
+   -------------------------------------------------------------------------- */
+
+/* Icon button base - for icon-only buttons */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-md);
+  color: var(--color-text-tertiary);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.icon-btn:hover {
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-tertiary);
+}
+
+.icon-btn:active {
+  transform: scale(0.95);
+}
+
+.icon-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Hover scale utility */
+.hover-scale {
+  transition: transform var(--transition-fast);
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* Hover lift utility */
+.hover-lift {
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Hover glow utility */
+.hover-glow {
+  transition: box-shadow var(--transition-base);
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px -5px var(--color-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hover-scale:hover,
+  .hover-lift:hover {
     transform: none !important;
   }
 }

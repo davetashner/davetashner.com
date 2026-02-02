@@ -22,6 +22,24 @@ export default [
     },
   },
   {
+    files: ['playwright.config.ts'],
+    languageOptions: {
+      globals: {
+        process: 'readonly',
+      },
+    },
+  },
+  {
+    files: ['tests/e2e/**/*.ts'],
+    languageOptions: {
+      globals: {
+        document: 'readonly',
+        window: 'readonly',
+        localStorage: 'readonly',
+      },
+    },
+  },
+  {
     ignores: ['dist/', 'node_modules/', '.astro/', 'infrastructure/'],
   },
 ];

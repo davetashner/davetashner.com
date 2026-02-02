@@ -1,0 +1,336 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const lastUpdated = 'February 1, 2026';
+---
+
+<BaseLayout
+  title="Privacy Policy - Dave Tashner"
+  description="Privacy policy for davetashner.com. Learn how your information is collected, used, and protected."
+>
+  <Header slot="header" />
+
+  <!-- Page Hero -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          <span class="text-gradient">Privacy Policy</span>
+        </h1>
+        <p class="hero-description">
+          Your privacy matters. This policy explains how information is
+          collected, used, and protected on this website.
+        </p>
+        <p class="last-updated">Last updated: {lastUpdated}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy Policy Content -->
+  <section class="content-section">
+    <div class="container">
+      <div class="content-wrapper">
+        <!-- Information Collected -->
+        <div class="policy-section">
+          <h2 class="section-title">Information Collected</h2>
+          <p>
+            This website collects minimal personal information, limited to what
+            you voluntarily provide through the contact form:
+          </p>
+          <ul class="policy-list">
+            <li>
+              <strong>Name:</strong> Used to personalize responses to your inquiries.
+            </li>
+            <li>
+              <strong>Email address:</strong> Used to respond to your message and
+              for any follow-up communication you initiate.
+            </li>
+            <li>
+              <strong>Message content:</strong> The information you choose to share
+              in your inquiry.
+            </li>
+          </ul>
+          <p>
+            No information is collected automatically beyond standard server
+            logs (such as IP addresses and browser information), which are used
+            solely for security and website performance purposes.
+          </p>
+        </div>
+
+        <!-- How Information Is Used -->
+        <div class="policy-section">
+          <h2 class="section-title">How Information Is Used</h2>
+          <p>The information you provide is used exclusively to:</p>
+          <ul class="policy-list">
+            <li>Respond to your inquiries and messages</li>
+            <li>Follow up on conversations you initiate</li>
+            <li>Improve the website based on feedback you provide</li>
+          </ul>
+          <p>
+            Your information is never sold, rented, or shared with third parties
+            for marketing purposes.
+          </p>
+        </div>
+
+        <!-- Third-Party Services -->
+        <div class="policy-section">
+          <h2 class="section-title">Third-Party Services</h2>
+          <p>This website uses the following third-party services:</p>
+          <ul class="policy-list">
+            <li>
+              <strong>Amazon Web Services (AWS):</strong> Provides hosting infrastructure
+              for this website and email delivery services. AWS processes data in
+              accordance with their{' '}
+              <a
+                href="https://aws.amazon.com/privacy/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="policy-link"
+              >
+                privacy policy
+              </a>.
+            </li>
+          </ul>
+          <p>
+            These services are used to operate the website reliably and
+            securely. They do not have access to your personal information
+            beyond what is necessary to provide their services.
+          </p>
+        </div>
+
+        <!-- Cookies -->
+        <div class="policy-section">
+          <h2 class="section-title">Cookies</h2>
+          <p>
+            This website uses minimal cookies. The only cookie stored is for
+            your theme preference (light or dark mode), which is saved in your
+            browser's local storage to remember your display preference across
+            visits.
+          </p>
+          <p>
+            No tracking cookies, analytics cookies, or advertising cookies are
+            used on this website.
+          </p>
+        </div>
+
+        <!-- Data Retention -->
+        <div class="policy-section">
+          <h2 class="section-title">Data Retention</h2>
+          <p>
+            Contact form submissions are retained only as long as necessary to
+            respond to your inquiry and maintain a record of our correspondence.
+            You may request deletion of your information at any time by
+            contacting me directly.
+          </p>
+          <p>
+            Server logs are retained for a limited period for security purposes
+            and are automatically deleted after that period.
+          </p>
+        </div>
+
+        <!-- Your Rights -->
+        <div class="policy-section">
+          <h2 class="section-title">Your Rights</h2>
+          <p>You have the right to:</p>
+          <ul class="policy-list">
+            <li>Request access to any personal information held about you</li>
+            <li>Request correction of inaccurate information</li>
+            <li>Request deletion of your personal information</li>
+            <li>Withdraw consent for data processing at any time</li>
+          </ul>
+        </div>
+
+        <!-- Contact for Privacy Questions -->
+        <div class="policy-section">
+          <h2 class="section-title">Contact for Privacy Questions</h2>
+          <p>
+            If you have any questions about this privacy policy or how your
+            information is handled, please reach out:
+          </p>
+          <div class="contact-info">
+            <a href="mailto:hello@davetashner.com" class="email-link">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+              </svg>
+              hello@davetashner.com
+            </a>
+          </div>
+        </div>
+
+        <!-- Policy Changes -->
+        <div class="policy-section">
+          <h2 class="section-title">Changes to This Policy</h2>
+          <p>
+            This privacy policy may be updated from time to time. Any changes
+            will be reflected on this page with an updated revision date. You
+            are encouraged to review this policy periodically.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  /* Hero Section */
+  .hero-section {
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+    background: var(--gradient-subtle);
+  }
+
+  .hero-content {
+    max-width: 40rem;
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .hero-description {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .last-updated {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .hero-section {
+      padding-top: 5rem;
+      padding-bottom: 3rem;
+    }
+
+    .hero-title {
+      font-size: 3rem;
+    }
+  }
+
+  /* Content Section */
+  .content-section {
+    padding-top: 3rem;
+    padding-bottom: 4rem;
+  }
+
+  .content-wrapper {
+    max-width: 48rem;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 768px) {
+    .content-section {
+      padding-top: 4rem;
+      padding-bottom: 6rem;
+    }
+  }
+
+  /* Policy Sections */
+  .policy-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .policy-section:last-child {
+    margin-bottom: 0;
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .policy-section p {
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin: 0 0 1rem 0;
+  }
+
+  .policy-section p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Policy List */
+  .policy-list {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+  }
+
+  .policy-list li {
+    margin-bottom: 0.5rem;
+  }
+
+  .policy-list li:last-child {
+    margin-bottom: 0;
+  }
+
+  .policy-list strong {
+    color: var(--color-text-primary);
+  }
+
+  /* Links */
+  .policy-link {
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .policy-link:hover {
+    color: var(--color-accent-hover);
+    text-decoration: underline;
+  }
+
+  /* Contact Info */
+  .contact-info {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    display: inline-block;
+  }
+
+  .email-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .email-link:hover {
+    color: var(--color-accent-hover);
+    transform: translateX(2px);
+  }
+</style>
