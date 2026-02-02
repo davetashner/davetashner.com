@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ThemeToggle from '../../components/ThemeToggle.astro';
+import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import ScrollReveal from '../../components/ScrollReveal.astro';
 
@@ -55,25 +55,7 @@ const formattedUpdatedDate = post.data.updatedDate?.toLocaleDateString(
   publishedTime={post.data.pubDate}
   modifiedTime={post.data.updatedDate}
 >
-  <header
-    slot="header"
-    class="sticky top-0 z-40 w-full border-b transition-theme"
-    style="border-color: var(--color-border); background-color: var(--color-bg-primary);"
-  >
-    <div class="container flex h-14 items-center justify-between">
-      <a
-        href="/"
-        class="font-semibold"
-        style="color: var(--color-text-primary); text-decoration: none;"
-      >
-        Dave Tashner
-      </a>
-      <nav class="flex items-center gap-6">
-        <a href="/blog" class="nav-link">Blog</a>
-        <ThemeToggle />
-      </nav>
-    </div>
-  </header>
+  <Header slot="header" />
 
   <article class="section">
     <div class="container">

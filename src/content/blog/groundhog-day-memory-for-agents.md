@@ -6,8 +6,6 @@ heroImage: '/blog/groundhog.png'
 tags: ['ai', 'agents', 'claude', 'productivity', 'software-development']
 ---
 
-![Groundhog Day](/blog/groundhog.png)
-
 # The Overnight Experiment
 
 Earlier this week I [posted on LinkedIn](https://www.linkedin.com/posts/dave-tashner_last-night-i-checked-my-claude-credits-and-activity-7421541312056782848-DN_Z?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAJ7ZvsBTK6jVpQ2wrX1XB2XzZtw-wjGJzw) about a little experiment I ran with multiagentic coding assistants that blew my mind - I was able to build a full website with a fleet of agents in my sleep. Literally.
