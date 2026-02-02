@@ -91,7 +91,7 @@ exports.handler = async (event) => {
 
     if (!email || sanitize(email).length === 0) {
       errors.push('Email is required');
-    } else if (!isValidEmail(email)) {
+    } else if (!isValidEmail(sanitize(email))) {
       errors.push('Please provide a valid email address');
     }
 

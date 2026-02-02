@@ -404,11 +404,22 @@ import Footer from '../components/Footer.astro';
     transform: translateX(-50%);
     color: var(--color-text-muted);
     animation: bounce 2s ease-in-out infinite;
-    transition: color var(--transition-fast);
+    transition:
+      color var(--transition-fast),
+      background-color var(--transition-fast);
+    padding: 0.5rem;
+    border-radius: var(--radius-full);
   }
 
   .scroll-indicator:hover {
-    color: var(--color-text-primary);
+    color: var(--color-accent);
+    background-color: var(--color-accent-light);
+  }
+
+  .scroll-indicator:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    animation-play-state: paused;
   }
 
   @keyframes bounce {
@@ -461,11 +472,45 @@ import Footer from '../components/Footer.astro';
     gap: 0.5rem;
     font-weight: 500;
     color: var(--color-accent);
-    transition: gap var(--transition-fast);
+    transition:
+      gap var(--transition-fast),
+      color var(--transition-fast);
+    position: relative;
+  }
+
+  .link-arrow::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gradient-primary);
+    transition: width var(--transition-base) ease-out;
+    border-radius: var(--radius-full);
   }
 
   .link-arrow:hover {
     gap: 0.75rem;
+    color: var(--color-accent-hover);
+  }
+
+  .link-arrow:hover::before {
+    width: calc(100% - 1.5rem);
+  }
+
+  .link-arrow:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
+  }
+
+  .link-arrow svg {
+    transition: transform var(--transition-fast);
+  }
+
+  .link-arrow:hover svg {
+    transform: translateX(2px);
   }
 
   /* ==========================================================================
@@ -551,10 +596,19 @@ import Footer from '../components/Footer.astro';
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--color-accent);
+    transition: gap var(--transition-fast);
+  }
+
+  .blog-card-link svg {
+    transition: transform var(--transition-fast);
   }
 
   .blog-card:hover .blog-card-link {
     gap: 0.75rem;
+  }
+
+  .blog-card:hover .blog-card-link svg {
+    transform: translateX(2px);
   }
 
   .blog-view-all {
@@ -609,6 +663,40 @@ import Footer from '../components/Footer.astro';
   .reveal-on-scroll.revealed {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-gradient-orb {
+      animation: none;
+    }
+
+    .scroll-indicator {
+      animation: none;
+    }
+
+    .reveal-on-scroll {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .blog-card:hover {
+      transform: none;
+    }
+
+    .link-arrow:hover svg,
+    .blog-card:hover .blog-card-link svg {
+      transform: none;
+    }
+
+    .link-arrow::before {
+      transition: none;
+    }
+
+    .link-arrow:hover::before {
+      width: calc(100% - 1.5rem);
+    }
   }
 </style>
 

@@ -7,6 +7,7 @@ const navLinks = [
   { href: '/about', label: 'About' },
   { href: '/blog', label: 'Blog' },
   { href: '/contact', label: 'Contact' },
+  { href: '/privacy', label: 'Privacy' },
 ];
 
 const socialLinks = [
@@ -222,17 +223,20 @@ const socialLinks = [
     font-size: 0.9375rem;
     transition: color var(--transition-fast);
     position: relative;
+    display: inline-block;
+    padding: 0.125rem 0;
   }
 
   .footer-link::after {
     content: '';
     position: absolute;
-    bottom: -2px;
+    bottom: 0;
     left: 0;
     width: 0;
-    height: 1px;
+    height: 2px;
     background: var(--gradient-primary);
-    transition: width var(--transition-base);
+    transition: width var(--transition-base) ease-out;
+    border-radius: var(--radius-full);
   }
 
   .footer-link:hover {
@@ -241,6 +245,12 @@ const socialLinks = [
 
   .footer-link:hover::after {
     width: 100%;
+  }
+
+  .footer-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
   }
 
   .social-links {
@@ -258,18 +268,61 @@ const socialLinks = [
     border-radius: var(--radius-md);
     color: var(--color-text-tertiary);
     background-color: var(--color-bg-tertiary);
-    transition: all var(--transition-fast);
+    transition:
+      color var(--transition-fast),
+      background-color var(--transition-fast),
+      background var(--transition-fast),
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast);
   }
 
   .social-link:hover {
-    color: var(--color-text-primary);
-    background: var(--gradient-subtle);
-    transform: translateY(-2px);
+    color: white;
+    background: var(--gradient-primary);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 4px 12px -2px rgba(59, 130, 246, 0.4);
   }
 
-  .social-link:focus {
+  .dark .social-link:hover {
+    box-shadow: 0 4px 12px -2px rgba(96, 165, 250, 0.3);
+  }
+
+  .social-link:active {
+    transform: translateY(-1px) scale(1);
+  }
+
+  .social-link:focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
+    box-shadow: 0 0 0 4px var(--color-accent-light);
+  }
+
+  /* Social link SVG icon animation */
+  .social-link svg {
+    transition: transform var(--transition-fast);
+  }
+
+  .social-link:hover svg {
+    transform: scale(1.1);
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .social-link:hover {
+      transform: none;
+    }
+
+    .social-link:hover svg {
+      transform: none;
+    }
+
+    .social-link:active {
+      transform: none;
+    }
+
+    .footer-link::after {
+      transition: none;
+    }
   }
 
   .footer-bottom {

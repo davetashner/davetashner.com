@@ -3,8 +3,9 @@ import { getViteConfig } from 'astro/config';
 
 export default getViteConfig({
   test: {
-    // Include test files
+    // Include test files (exclude e2e tests which use Playwright)
     include: ['tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts}'],
+    exclude: ['tests/e2e/**', 'node_modules/**'],
 
     // Global test timeout
     testTimeout: 10000,
