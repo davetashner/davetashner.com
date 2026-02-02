@@ -1,7 +1,14 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import BlogCard from '../components/BlogCard.astro';
+
+// Get 3 most recent blog posts
+const recentPosts = (await getCollection('blog'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
 ---
 
 <BaseLayout title="Dave Tashner - Software Engineer & Creator">
@@ -109,95 +116,23 @@ import Footer from '../components/Footer.astro';
         </p>
       </div>
       <div class="blog-grid">
-        <!-- Blog Post Card 1 (Placeholder) -->
-        <article class="blog-card reveal-on-scroll">
-          <div class="blog-card-content">
-            <span class="blog-card-date">Coming Soon</span>
-            <h3 class="blog-card-title">First Blog Post</h3>
-            <p class="blog-card-excerpt">
-              Stay tuned for upcoming articles on software development,
-              technology trends, and lessons learned.
-            </p>
-            <span class="blog-card-link">
-              Read more
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M5 12h14"></path>
-                <path d="m12 5 7 7-7 7"></path>
-              </svg>
-            </span>
-          </div>
-        </article>
-
-        <!-- Blog Post Card 2 (Placeholder) -->
-        <article class="blog-card reveal-on-scroll">
-          <div class="blog-card-content">
-            <span class="blog-card-date">Coming Soon</span>
-            <h3 class="blog-card-title">Second Blog Post</h3>
-            <p class="blog-card-excerpt">
-              Exploring new ideas and sharing insights from my journey in
-              software engineering.
-            </p>
-            <span class="blog-card-link">
-              Read more
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M5 12h14"></path>
-                <path d="m12 5 7 7-7 7"></path>
-              </svg>
-            </span>
-          </div>
-        </article>
-
-        <!-- Blog Post Card 3 (Placeholder) -->
-        <article class="blog-card reveal-on-scroll">
-          <div class="blog-card-content">
-            <span class="blog-card-date">Coming Soon</span>
-            <h3 class="blog-card-title">Third Blog Post</h3>
-            <p class="blog-card-excerpt">
-              Practical tips and tutorials to help you level up your development
-              skills.
-            </p>
-            <span class="blog-card-link">
-              Read more
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M5 12h14"></path>
-                <path d="m12 5 7 7-7 7"></path>
-              </svg>
-            </span>
-          </div>
-        </article>
+        {
+          recentPosts.map((post, index) => (
+            <div
+              class="reveal-on-scroll"
+              style={`animation-delay: ${index * 100}ms`}
+            >
+              <BlogCard
+                title={post.data.title}
+                description={post.data.description}
+                pubDate={post.data.pubDate}
+                heroImage={post.data.heroImage}
+                tags={post.data.tags}
+                slug={post.id}
+              />
+            </div>
+          ))
+        }
       </div>
       <div class="blog-view-all reveal-on-scroll">
         <a href="/blog" class="link-arrow">
