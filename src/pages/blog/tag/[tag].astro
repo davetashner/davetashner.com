@@ -101,7 +101,7 @@ const displayTag = tag
 
       {
         posts.length > 0 ? (
-          <div class="blog-grid stagger-children animate-stagger">
+          <div class="blog-grid">
             {posts.map((post, index) => (
               <ScrollReveal animation="fade-up" delay={index * 50} as="article">
                 <BlogCard
